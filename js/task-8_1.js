@@ -33,17 +33,22 @@ const createGallery = () => {
 const openModal = event => {
   event.preventDefault();
   const target = event.target;
-  console.log(target.dataset.index);
   target.dataset.source;
-  // console.log(target.dataset.source);
-  // console.log(target.nodeName);
   if (target.nodeName !== 'IMG') return;
   refs.modalOpen.classList.add('is-open');
   refs.image.src = target.dataset.source;
   indexCurrentImage = event.target.dataset.index;
-  console.log(+indexCurrentImage + 1);
   window.addEventListener('keydown', closeModal);
   window.addEventListener('keydown', pressKey);
+};
+
+const closeModal = event => {
+  event.preventDefault();
+  console.log(event.code);
+  const target = event.target;
+  if (target.nodeName !== 'DIV' && target.nodeName !== 'BUTTON') return;
+  refs.image.src = refs.image.src;
+  refs.modalOpen.classList.remove('is-open');
 };
 
 const pressKey = event => {
@@ -58,31 +63,18 @@ const pressKey = event => {
         ? (indexCurrentImage = 0)
         : (indexCurrentImage = +indexCurrentImage + 1);
       refs.image.src = galleryItems[indexCurrentImage].original;
-      console.log('right', indexCurrentImage);
       break;
     case 'ArrowLeft':
       indexCurrentImage === 0
         ? (indexCurrentImage = galleryItems.length - 1)
         : (indexCurrentImage = +indexCurrentImage - 1);
       refs.image.src = galleryItems[indexCurrentImage].original;
-      console.log(indexCurrentImage);
       break;
     default:
       return;
   }
 };
 
-const closeModal = event => {
-  event.preventDefault();
-  console.log(event.code);
-  const target = event.target;
-  // console.log(target.value);
-  if (target.nodeName !== 'DIV' && target.nodeName !== 'BUTTON') return;
-  refs.image.src = refs.image.src;
-  refs.modalOpen.classList.remove('is-open');
-};
-
 refs.listGallery.addEventListener('click', openModal);
 document.body.addEventListener('click', closeModal);
-
 createGallery();
