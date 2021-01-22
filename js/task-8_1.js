@@ -61,13 +61,13 @@ const pressKey = event => {
     case 'ArrowRight':
       indexCurrentImage === galleryItems.length - 1
         ? (indexCurrentImage = 0)
-        : (indexCurrentImage = +indexCurrentImage + 1);
+        : (indexCurrentImage = parseInt(indexCurrentImage) + 1);
       refs.image.src = galleryItems[indexCurrentImage].original;
       break;
     case 'ArrowLeft':
       indexCurrentImage === 0
         ? (indexCurrentImage = galleryItems.length - 1)
-        : (indexCurrentImage = +indexCurrentImage - 1);
+        : (indexCurrentImage = parseInt(indexCurrentImage) - 1);
       refs.image.src = galleryItems[indexCurrentImage].original;
       break;
     default:
