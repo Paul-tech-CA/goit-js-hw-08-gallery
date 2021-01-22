@@ -7,8 +7,10 @@ const refs = {
   image: document.querySelector('.lightbox__image'),
   modalOpen: document.querySelector('.js-lightbox'),
   modalClose: document.querySelector('[data-action="close-lightbox"]'),
+  leftArrow: document.querySelector('.arrow-slider .left-arrow'),
+  rightArrow: document.querySelector('.arrow-slider .right-arrow'),
 };
-
+// ------- forEach + InsertAdjacentHTML ---------------
 const createGallery = () => {
   galleryItems.forEach(({ original, preview, description }, index) => {
     let template = '';
@@ -30,7 +32,7 @@ const createGallery = () => {
     refs.listGallery.insertAdjacentHTML('afterbegin', template);
   });
 };
-
+// --------- for + innerHTML ----------------
 // const createGallery = () => {
 //   let template = '';
 //   for (let i = 0; i < galleryItems.length; i++) {
@@ -51,6 +53,7 @@ const createGallery = () => {
 //   }
 //   refs.listGallery.innerHTML = template;
 // };
+//-----------------------------------------------------
 
 const openModal = event => {
   event.preventDefault();
@@ -63,15 +66,18 @@ const openModal = event => {
   indexCurrentImage = event.target.dataset.index;
   window.addEventListener('keydown', closeModal);
   window.addEventListener('keydown', pressKey);
+  window.addEventListener('click', clickArrows);
 };
 
 const closeModal = event => {
-  console.log(event.code);
   const target = event.target;
   if (target.nodeName !== 'DIV' && target.nodeName !== 'BUTTON') return;
   refs.image.src = '';
   refs.image.alt = '';
   refs.modalOpen.classList.remove('is-open');
+  window.removeEventListener('click', clickArrows);
+  window.removeEventListener('keydown', closeModal);
+  window.removeEventListener('keydown', pressKey);
 };
 
 const pressKey = event => {
@@ -89,6 +95,26 @@ const pressKey = event => {
       refs.image.src = galleryItems[indexCurrentImage].original;
       break;
     case 'ArrowLeft':
+      indexCurrentImage === 0
+        ? (indexCurrentImage = galleryItems.length - 1)
+        : (indexCurrentImage = parseInt(indexCurrentImage) - 1);
+      refs.image.src = galleryItems[indexCurrentImage].original;
+      break;
+    default:
+      return;
+  }
+};
+
+const clickArrows = event => {
+  console.log('event.target', event.target.nodeName);
+  switch (event.target.nodeName) {
+    case 'svg':
+      indexCurrentImage === galleryItems.length - 1
+        ? (indexCurrentImage = 0)
+        : (indexCurrentImage = parseInt(indexCurrentImage) + 1);
+      refs.image.src = galleryItems[indexCurrentImage].original;
+      break;
+    case 'SVG':
       indexCurrentImage === 0
         ? (indexCurrentImage = galleryItems.length - 1)
         : (indexCurrentImage = parseInt(indexCurrentImage) - 1);

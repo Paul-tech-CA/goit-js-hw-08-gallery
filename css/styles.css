@@ -139,3 +139,61 @@ body {
 .lightbox__button:focus {
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+.arrow-slider {
+  position: absolute;
+  top: 97%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+​ .arrow-slider svg {
+  width: 40px;
+  height: auto;
+  margin: 0 0rem;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.arrow-slider svg polygon,
+.arrow-slider svg path {
+  transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+  fill: white;
+}
+.arrow-slider svg:hover polygon,
+.arrow-slider svg:hover path {
+  transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
+  fill: tomato;
+}
+.arrow-slider svg:hover .arrow-slider-pl {
+  animation: arrow-slider-anim 1s cubic-bezier(0.2, 1, 0.3, 1) infinite;
+}
+.arrow-slider svg:hover .arrow-slider-pl-fixed {
+  animation: arrow-slider-fixed-anim 1s cubic-bezier(0.2, 1, 0.3, 1) infinite;
+}
+​ .arrow-display {
+  display: none;
+}
+​ @keyframes arrow-slider-anim {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  5% {
+    transform: translateX(-0.1rem);
+  }
+  100% {
+    transform: translateX(1rem);
+    opacity: 0;
+  }
+}
+@keyframes arrow-slider-fixed-anim {
+  5% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
