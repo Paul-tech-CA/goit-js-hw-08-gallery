@@ -10,25 +10,47 @@ const refs = {
 };
 
 const createGallery = () => {
-  let template = '';
-  for (let i = 0; i < galleryItems.length; i++) {
+  galleryItems.forEach(({ original, preview, description }, index) => {
+    let template = '';
     template += `<li class="gallery__item">
   <a
     class="gallery__link"
-    href="${galleryItems[i].original}"
+    href="${original}"
   >
     <img
       class="gallery__image"
-      src="${galleryItems[i].preview}"
-      data-source="${galleryItems[i].original}"
-      data-index='${i}'
-      alt="${galleryItems[i].description}"
+      src="${preview}"
+      data-source="${original}"
+      data-index='${index}'
+      alt="${description}"
     />
   </a>
 </li>`;
-  }
-  refs.listGallery.innerHTML = template;
+
+    refs.listGallery.insertAdjacentHTML('afterbegin', template);
+  });
 };
+
+// const createGallery = () => {
+//   let template = '';
+//   for (let i = 0; i < galleryItems.length; i++) {
+//     template += `<li class="gallery__item">
+//   <a
+//     class="gallery__link"
+//     href="${galleryItems[i].original}"
+//   >
+//     <img
+//       class="gallery__image"
+//       src="${galleryItems[i].preview}"
+//       data-source="${galleryItems[i].original}"
+//       data-index='${i}'
+//       alt="${galleryItems[i].description}"
+//     />
+//   </a>
+// </li>`;
+//   }
+//   refs.listGallery.innerHTML = template;
+// };
 
 const openModal = event => {
   event.preventDefault();
@@ -37,24 +59,26 @@ const openModal = event => {
   if (target.nodeName !== 'IMG') return;
   refs.modalOpen.classList.add('is-open');
   refs.image.src = target.dataset.source;
+  refs.image.alt = target.alt;
   indexCurrentImage = event.target.dataset.index;
   window.addEventListener('keydown', closeModal);
   window.addEventListener('keydown', pressKey);
 };
 
 const closeModal = event => {
-  event.preventDefault();
   console.log(event.code);
   const target = event.target;
   if (target.nodeName !== 'DIV' && target.nodeName !== 'BUTTON') return;
-  refs.image.src = refs.image.src;
+  refs.image.src = '';
+  refs.image.alt = '';
   refs.modalOpen.classList.remove('is-open');
 };
 
 const pressKey = event => {
   switch (event.code) {
     case 'Escape':
-      refs.image.src = refs.image.src;
+      refs.image.src = '';
+      refs.image.alt = '';
       refs.modalOpen.classList.remove('is-open');
       window.removeEventListener('keydown', closeModal);
       break;
